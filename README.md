@@ -1,7 +1,7 @@
 # Human-Skin-Detection
 Human Skin Detection Using RGB, HSV and YCbCr Color. this code is all algorithmic way to detect human skin and best for the preprocessing of the Deep learning as zero shot methods. This method is implemented from a paper!
 
-<img src="/Pictures/Input/jensen_huang.jpg"/>
+<img src="/Pictures/Output/jensen_huang.jpg"/>
 
 ## Tech :hammer_and_wrench: Languages and Tools :
 

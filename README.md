@@ -16,3 +16,7 @@ Human Skin Detection Using RGB, HSV and YCbCr Color
 - Google Colab : Best Space for running Jupyter Notebook with hosted server
 - OpenCV : Best Library for working with images
 - Numpy : Best Library for working with arrays in python
+
+## License
+
+This project is licensed under the MIT License.

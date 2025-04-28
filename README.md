@@ -41,37 +41,45 @@ import matplotlib.pyplot as plt
 
 ### Step 2: Download Images
 
-We need to Download the images from my `Github` repository or you can download others that have digits by your own.
+We need to Download the images from my `Github` repository or you can download other human pictures by your own.
 
 ```sh
-!wget https://raw.githubusercontent.com/AsadiAhmad/Digit-Binarization/main/Pictures/number0.jpg -O number0.jpg
-!wget https://raw.githubusercontent.com/AsadiAhmad/Digit-Binarization/main/Pictures/number1.jpg -O number1.jpg
-!wget https://raw.githubusercontent.com/AsadiAhmad/Digit-Binarization/main/Pictures/number2.jpg -O number2.jpg
+!wget https://raw.githubusercontent.com/AsadiAhmad/Human-Skin-Detection/main/Pictures/Input/jensen_huang.jpg -O jensen_huang.jpg
+!wget https://raw.githubusercontent.com/AsadiAhmad/Human-Skin-Detection/main/Pictures/Input/elon_musk.jpg -O elon_musk.jpg
+!wget https://raw.githubusercontent.com/AsadiAhmad/Human-Skin-Detection/main/Pictures/Input/mark_zukerberg.jpg -O mark_zukerberg.jpg
+!wget https://raw.githubusercontent.com/AsadiAhmad/Human-Skin-Detection/main/Pictures/Input/linus_torvalds.jpg -O linus_torvalds.jpg
 ```
 
 ### Step 3: Load Images
 
-we need to load images into `python` variables we ues `OpenCV` library to read the images also the format of the images are `nd.array`
+We need to load images into `python` variables we ues `OpenCV` library to read the images also the format of the images are `nd.array`.
 
 ```sh
-image = cv.imread('number0.jpg', cv.IMREAD_GRAYSCALE)
+bgr_image = cv2.imread('jensen_huang.jpg')
+elon_musk = cv2.imread('elon_musk.jpg')
+mark_zukerberg = cv2.imread('mark_zukerberg.jpg')
+linus_torvalds = cv2.imread('linus_torvalds.jpg')
 ```
 
+### Step 4: Extract HSV and YCrCb color formats
+
+In this algorithmic approch we need to get teh HSV and YCrCb color formats for calculating the conditions
+
+```sh
+hsv_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
+ycrcb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2YCrCb)
+```
+
+HSV color format :
+
 <div display=flex align=center>
-  <img src="/Pictures/0.jpg" width="400px"/>
+  <img src="/Pictures/Colors/HSV.jpg" width="400px"/>
 </div>
 
-### Step 4: Image Binarization
-
-this is our primary state that we should remove noise with median filter and then use the adaptive thresholding for removing the background in each section of the image so we do not have any dark section in the image.
-
-```sh
-noise_removed = cv.medianBlur(image, 5)
-binary_image = cv.adaptiveThreshold(noise_removed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
-```
+YCbCr color format :
 
 <div display=flex align=center>
-  <img src="/Pictures/1.jpg" width="400px"/>
+  <img src="/Pictures/Colors/YCbCr.jpg" width="400px"/>
 </div>
 
 ### Step 5: Invert the Binary Image

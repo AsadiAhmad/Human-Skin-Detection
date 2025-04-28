@@ -82,72 +82,112 @@ YCbCr color format :
   <img src="/Pictures/Colors/YCbCr.jpg" width="400px"/>
 </div>
 
-### Step 5: Invert the Binary Image
+### Step 5: Split Image Channels
 
-For using the morpholgy in image processing we need to invert the images 
+For calculating the conditions we need to split each channel from each color space.
 
 ```sh
-inverted_image = 255 - binary_image
+B, G, R = cv2.split(bgr_image)
+H, S, V = cv2.split(hsv_image)
+Y, Cr, Cb = cv2.split(ycrcb_image)
+```
+
+### Step 6: Apply Conditions
+
+We should apply all conditions from each color space. if each pixel pass all conditions it means that pixel is a skin pixel.
+
+```sh
+def conditions(r, g, b, h, s, v, y, cr, cb):
+    s = s / 255.0
+    condition_rgb = (r > 95) and (g > 40) and (b > 20) and (r > g) and (r > b) and (abs(r-g) > 15)
+    condition_hsv = (0 <= h <= 50) and (0.23 <= s <= 0.68)
+    condition_ycrcb = (cr > 135) and (cb > 85) and (y > 80) and (cr <= (1.5862*cb)+20) and (cr>=(0.3448*cb)+76.2069) and (cr >= (-4.5652*cb)+234.5652) and (cr <= (-1.15*cb)+301.75) and (cr <= (-2.2857*cb)+432.85)
+    return condition_rgb and condition_hsv and condition_ycrcb
+```
+
+```sh
+height, width, channels = bgr_image.shape
+image = np.zeros((height, width), np.uint8)
+main_image = bgr_image.copy()
+for i in range(height):
+    for j in range(width):
+        if conditions(R[i, j], G[i, j], B[i, j], H[i, j], S[i, j], V[i, j], Y[i, j], Cr[i, j], Cb[i, j]):
+            image[i, j] = 255
+        else:
+            main_image[i, j] = [0, 0, 0]
+```
+
+### Step 7: Plot images
+
+Now we need to see what have done to images.
+
+```sh
+fig, axs = plt.subplots(1, 3, figsize=(12, 4))
+
+axs[0].imshow(cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB))
+axs[0].set_title('Original Image')
+axs[0].axis('off')
+
+axs[1].imshow(image, cmap='gray')
+axs[1].set_title('Skin Mask')
+axs[1].axis('off')
+
+axs[2].imshow(cv2.cvtColor(main_image, cv2.COLOR_BGR2RGB))
+axs[2].set_title('Detected Skin Areas')
+axs[2].axis('off')
+
+plt.tight_layout()
+plt.show()
 ```
 
 <div display=flex align=center>
-  <img src="/Pictures/2.jpg" width="400px"/>
+  <img src="/Pictures/Output/jensen_huang.jpg" width="400px"/>
 </div>
 
-### Step 6: Opening Image for Completely remove Noise
+### Step 8: Put all together
 
-Actually Opening have two section :
-
-1- Erosion for removing noise that are not eleminated by midan filter and created after biniarization the image.
+So in this step we put all of things together and test that for other pictures.
 
 ```sh
-kernel = np.ones((2, 2), np.uint8)
-erosion = cv.erode(inverted_image, kernel, iterations = 1)
+def skin_detector(bgr_image):
+    hsv_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
+    ycrcb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2YCrCb)
+    B, G, R = cv2.split(bgr_image)
+    H, S, V = cv2.split(hsv_image)
+    Y, Cr, Cb = cv2.split(ycrcb_image)
+    height, width, channels = bgr_image.shape
+    image = np.zeros((height, width), np.uint8)
+    main_image = bgr_image.copy()
+    for i in range(height):
+        for j in range(width):
+            if conditions(R[i, j], G[i, j], B[i, j], H[i, j], S[i, j], V[i, j], Y[i, j], Cr[i, j], Cb[i, j]):
+                image[i, j] = 255
+            else:
+                main_image[i, j] = [0, 0, 0]
+
+    fig, axs = plt.subplots(1, 3, figsize=(12, 4))
+
+    axs[0].imshow(cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB))
+    axs[0].set_title('Original Image')
+    axs[0].axis('off')
+
+    axs[1].imshow(image, cmap='gray')
+    axs[1].set_title('Skin Mask')
+    axs[1].axis('off')
+
+    axs[2].imshow(cv2.cvtColor(main_image, cv2.COLOR_BGR2RGB))
+    axs[2].set_title('Detected Skin Areas')
+    axs[2].axis('off')
+
+    plt.tight_layout()
+    plt.show()
 ```
 
-<div display=flex align=center>
-  <img src="/Pictures/3.jpg" width="400"/>
-</div>
+<img src="/Pictures/Output/elon_musk.jpg"/>
 
-2- Dilation for bolding the text because after the erosion we lose some part of the text so we need to refill the text.
+<img src="/Pictures/Output/mark_zukerberg.jpg"/>
 
-```sh
-kernel2 = np.ones((5, 5), np.uint8)
-dilation = cv.dilate(erosion, kernel2, iterations = 1)
-```
-
-<div display=flex align=center>
-  <img src="/Pictures/4.jpg" width="400px"/>
-</div>
-
-### Step 7: Invert Image again
-
-we have an Image with white text and black background and we don't want this so we invert that again.
-
-```sh
-inverted_image2 = 255 - dilation
-```
-
-<div display=flex align=center>
-  <img src="/Pictures/5.jpg" width="400px"/>
-</div>
-
-### Step 8: All together for other images
-
-so in this step we put all of things together and test that for other images.
-
-```sh
-def binarization_image(image, blur_value=5, kernel_erosion=(2, 2), kernel_dilation=(5, 5)):
-    noise_removed = cv.medianBlur(image, blur_value)
-    binary_image = cv.adaptiveThreshold(noise_removed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
-    inverted_image = 255 - binary_image
-    kernel = np.ones(kernel_erosion, np.uint8)
-    erosion = cv.erode(inverted_image, kernel, iterations = 1)
-    kernel2 = np.ones(kernel_dilation, np.uint8)
-    dilation = cv.dilate(erosion, kernel2, iterations = 1)
-    inverted_image2 = 255 - dilation
-    return inverted_image2
-```
+<img src="/Pictures/Output/linus_torvalds.jpg"/>
 
 ## License
 

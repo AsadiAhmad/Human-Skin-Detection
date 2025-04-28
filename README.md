@@ -3,6 +3,9 @@ Human Skin Detection Using RGB, HSV and YCbCr Color. this code is all algorithmi
 
 <img src="/Pictures/Output/jensen_huang.jpg"/>
 
+## Research Paper
+This implementation is based on the paper: "[Human Skin Detection Using RGB, HSV and YCbCr Color Models](https://arxiv.org/abs/1708.02694)" by S.Kolkur, D.Kalbande, P.Shimpi, C.Bapat, J.Jatakia.
+
 ## Tech :hammer_and_wrench: Languages and Tools :
 
 <div>

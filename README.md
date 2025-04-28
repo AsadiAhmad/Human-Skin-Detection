@@ -140,9 +140,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-<div display=flex align=center>
-  <img src="/Pictures/Output/jensen_huang.jpg" width="400px"/>
-</div>
+<img src="/Pictures/Output/jensen_huang.jpg"/>
 
 ### Step 8: Put all together
 

@@ -19,7 +19,7 @@ Human Skin Detection Using RGB, HSV and YCbCr Color
 
 ## Run the Notebook on Google Colab
 
-You can easily run this code on google colab by just clicking this badge [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AsadiAhmad/Digit-Binarization/blob/main/Code/Image_Binarization.ipynb)
+You can easily run this code on google colab by just clicking this badge [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AsadiAhmad/Human-Skin-Detection/blob/main/Code/Human-Skin-Detector.ipynb)
 
 ## License
 

@@ -3,7 +3,7 @@ Human Skin Detection Using RGB, HSV and YCbCr Color. this code is all algorithmi
 
 <img src="/Pictures/Output/jensen_huang.jpg"/>
 
-## Research Paper
+## 🔍📄 Research Paper
 This implementation is based on the paper: "[Human Skin Detection Using RGB, HSV and YCbCr Color Models](https://arxiv.org/abs/1708.02694)" by S.Kolkur, D.Kalbande, P.Shimpi, C.Bapat, J.Jatakia.
 
 ## Tech :hammer_and_wrench: Languages and Tools :
@@ -24,11 +24,11 @@ This implementation is based on the paper: "[Human Skin Detection Using RGB, HSV
 - Numpy : Best Library for working with arrays in python
 - MatPlotLib : Library for showing the charts in python
 
-## Run the Notebook on Google Colab
+## 💻 Run the Notebook on Google Colab
 
 You can easily run this code on google colab by just clicking this badge [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AsadiAhmad/Human-Skin-Detection/blob/main/Code/Human-Skin-Detector.ipynb)
 
-## Tutorial
+## 📝 Tutorial
 
 ### Step 1: Import Libraries
 
@@ -190,6 +190,6 @@ def skin_detector(bgr_image):
 
 <img src="/Pictures/Output/linus_torvalds.jpg"/>
 
-## License
+## 🪪 License
 
 This project is licensed under the MIT License.

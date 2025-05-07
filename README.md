@@ -36,7 +36,7 @@ we need to import these libraries :
 
 `cv2`, `numpy`, `matplotlib`
 
-```sh
+```python
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ We need to Download the images from my `Github` repository or you can download o
 
 We need to load images into `python` variables we ues `OpenCV` library to read the images also the format of the images are `nd.array`.
 
-```sh
+```python
 bgr_image = cv2.imread('jensen_huang.jpg')
 elon_musk = cv2.imread('elon_musk.jpg')
 mark_zukerberg = cv2.imread('mark_zukerberg.jpg')
@@ -68,7 +68,7 @@ linus_torvalds = cv2.imread('linus_torvalds.jpg')
 
 In this algorithmic approch we need to get teh HSV and YCrCb color formats for calculating the conditions
 
-```sh
+```python
 hsv_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
 ycrcb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2YCrCb)
 ```
@@ -89,7 +89,7 @@ YCbCr color format :
 
 For calculating the conditions we need to split each channel from each color space.
 
-```sh
+```python
 B, G, R = cv2.split(bgr_image)
 H, S, V = cv2.split(hsv_image)
 Y, Cr, Cb = cv2.split(ycrcb_image)
@@ -99,7 +99,7 @@ Y, Cr, Cb = cv2.split(ycrcb_image)
 
 We should apply all conditions from each color space. if each pixel pass all conditions it means that pixel is a skin pixel.
 
-```sh
+```python
 def conditions(r, g, b, h, s, v, y, cr, cb):
     s = s / 255.0
     condition_rgb = (r > 95) and (g > 40) and (b > 20) and (r > g) and (r > b) and (abs(r-g) > 15)
@@ -108,7 +108,7 @@ def conditions(r, g, b, h, s, v, y, cr, cb):
     return condition_rgb and condition_hsv and condition_ycrcb
 ```
 
-```sh
+```python
 height, width, channels = bgr_image.shape
 image = np.zeros((height, width), np.uint8)
 main_image = bgr_image.copy()
@@ -124,7 +124,7 @@ for i in range(height):
 
 Now we need to see what have done to images.
 
-```sh
+```python
 fig, axs = plt.subplots(1, 3, figsize=(12, 4))
 
 axs[0].imshow(cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB))
@@ -149,7 +149,7 @@ plt.show()
 
 So in this step we put all of things together and test that for other pictures.
 
-```sh
+```python
 def skin_detector(bgr_image):
     hsv_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
     ycrcb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2YCrCb)
